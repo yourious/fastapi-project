@@ -1,0 +1,20 @@
+# Node.js залежності
+node_modules/
+
+# Python віртуальне середовище
+venv/
+
+# Логи
+*.log
+
+# Системні файли
+.DS_Store
+Thumbs.db
+
+# IDE налаштування
+.idea/
+.vscode/
+
+# Файли, що генеруються
+dist/
+build/

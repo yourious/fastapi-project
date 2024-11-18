@@ -36,11 +36,17 @@ def get_db():
 
 @app.post("/users/", response_model=DbUser)
 async def create_user(user: UserCreate, db: Session = Depends(get_db)) -> DbUser:
+    db_user = db.query(User).filter(User.name == user.name).first()
+    if db_user:
+        raise HTTPException(status_code=400, detail='User already exists.')
     db_user = User(name=user.name, age=user.age)
     db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-
+    try:
+        db.commit()
+        db.refresh(db_user)
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error: {e}")
     return db_user
 
 
